@@ -5,9 +5,13 @@ html(lang="en")
       = pageTitle
     include templates/stylesheet
   body
+    .nav
+      if user
+        a(href='/logout') Logout
+        .name Hello #{user.name}
+      else
+        a(href='/login/facebook') Facebook Login
     #container.col
-      p.
-        basic seed
   footer
     include templates/javascript
     

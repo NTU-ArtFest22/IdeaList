@@ -26,6 +26,12 @@ var cookieParser = require('cookie-parser');
 var busboy = require('connect-multiparty');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
+
+var AdminUser = require('./models').AdminUser;
+var User = require('./models').User;
 
 var routes = require('./routes');
 
@@ -71,9 +77,48 @@ exports.server = function() {
   app.use(bodyParser.urlencoded({
     extended: true
   }));
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(function(id, done) {
+    return User
+      .findOneAsync({
+        _id: id
+      })
+      .then(function(user) {
+        return done(null, user);
+      })
+      .error(function(err) {
+        return done(err, null);
+      });
+  });
+
+  passport.use(new LocalStrategy({
+      usernameField: 'email',
+      passwordField: 'password'
+    },
+    function(email, password, done) {
+      AdminUser.isValidUserPassword(email, password, done);
+    }));
+
+  passport.use(new FacebookStrategy({
+      clientID: settings.facebook.clientID,
+      clientSecret: settings.facebook.clientSecret,
+      callbackURL: settings.facebook.callbackURL,
+      profileFields: ['id', 'emails','displayName']
+    },
+    function(accessToken, refreshToken, profile, done) {
+      profile.authOrigin = 'facebook';
+      User.findOrCreateOAuthUser(profile, function(err, user) {
+        return done(err, user);
+      });
+    }));
 
   app.use(methodOverride('_method'));
-
 
   app.use(serveStatic(path.join(__dirname, 'public'), {
     maxAge: 1000 * 60 * 60 * 24 // 1 day

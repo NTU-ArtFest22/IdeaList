@@ -29,6 +29,10 @@
     "nodemailer": "~1.4.0",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "nodemailer-smtp-transport": "^1.0.3",
+    "passport": "^0.3.0",
+    "passport-facebook": "^2.0.0",
+    "passport-local": "^1.0.0",
+    "redis-tag": "^0.2.0",
     "serve-favicon": "^2.3.0",
     "serve-static": "^1.10.0",
     "slackbot": "0.0.2"

@@ -14,5 +14,10 @@ module.exports = {
   mongooseDebug: false,
   slackKey: 'slack_key',
   slackTeam: 'slack_team',
-  slackErrorChannel: '#error'
+  slackErrorChannel: '#error',
+  facebook:{
+    clientID:'1017275854991795',
+    clientSecret: 'clientSecret',
+    callbackURL: 'http://localhost:3000/login/facebook/callback'
+  }
 };
