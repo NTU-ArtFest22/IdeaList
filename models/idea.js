@@ -9,12 +9,18 @@ var IdeaSchema = new Schema({
     ref: 'User',
     required: true
   },
-  content: [{
+  title: {
     type: String,
     default: ''
-  }],
+  },
+  content: {
+    type: String,
+    default: ''
+  },
   image: String,
-  tags: [String],
+  tags: [
+    String
+  ],
   lastUpdateBy: {
     type: Schema.Types.ObjectId,
     ref: 'User'

@@ -1,12 +1,20 @@
 <div id="wrapper">
+  <div class='btn btn-primary' ng-if='!hasBack()' ng-click='back()'>Back</div>
+  <div class='btn btn-success' ng-click='newIdea();'>NEW idea!</div>
+  <hr>
   <div id="columns">
     <div ng-repeat="idea in ideaList" class="pin">
       <img ng-src="{{idea.image}}" ng-init="idea.image = (idea.image)? idea.image: &quot;placeholder.png&quot;"/>
+      <p ng-bind="idea.title"></p>
       <div ng-repeat="tag in idea.tags" class="tag">
-        <a ng-href="/?tags={{tag}}" ng-bind='tag'></a>
+        <a ng-href="/?tags={{tag}}" ng-bind='"#"+tag'></a>
       </div>
-      <p ng-bind="idea.content"></p>
+      <br>
+      <pre ng-bind="idea.content"></pre>
       <p ng-bind="idea.time"></p>
     </div>
   </div>
+</div>
+<div ng-if='$scope.addIdea'>
+  
 </div>

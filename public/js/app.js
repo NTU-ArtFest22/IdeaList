@@ -32,6 +32,7 @@ angular.module('app', ['ngRoute'], function($locationProvider) {
       $location
     ) {
       var query = $location.search();
+      $scope.addIdea = false;
       $http.post('/api/get_idea', query)
         .success(function(data) {
           _.each(data, function(element) {
@@ -42,5 +43,8 @@ angular.module('app', ['ngRoute'], function($locationProvider) {
         .error(function(err) {
           console.log(err);
         });
+      $scope.newIdea = function() {
+        $scope.addIdea = !$scope.addIdea;
+      };
     }
   ]);
