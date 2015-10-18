@@ -8,10 +8,10 @@ html(lang="en" ng-app='app')
   body(ng-controller='ideaController')
     #wrapper.container-fluid
       .row
-        .col-md-4.btn.btn-success(ng-click='newIdea();') NEW idea!
+        .col-md-3.btn.btn-success(data-toggle="modal" data-target="#newIdea" ng-click='newIdea();') NEW idea!
         if user
-          a.right.col-md-4.btn.btn-primary(href='/logout' target="_self") Logout
-          .right.col-md-4.name Hello #{user.name}
+          .right.col-md-3.name Hello #{user.name}
+          a.right.col-md-3.btn.btn-primary(href='/logout' target="_self") Logout
         else
           a.right.col-md-4.btn.btn-primary(href='/login/facebook' target="_self") Facebook Login
       hr
@@ -19,5 +19,4 @@ html(lang="en" ng-app='app')
         div(ng-view)
   footer
     include templates/javascript
-    
-    script(type='text/javascript' src='/js/app.js').
+    script(type='text/javascript' src='/js/app.js')

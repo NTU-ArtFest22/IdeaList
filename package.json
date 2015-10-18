@@ -33,9 +33,11 @@
     "passport-facebook": "^2.0.0",
     "passport-local": "^1.0.0",
     "redis-tag": "^0.2.0",
+    "request": "^2.65.0",
     "serve-favicon": "^2.3.0",
     "serve-static": "^1.10.0",
-    "slackbot": "0.0.2"
+    "slackbot": "0.0.2",
+    "unfluff": "^0.11.0"
   },
   "devDependencies": {
     "del": "^1.1.1",

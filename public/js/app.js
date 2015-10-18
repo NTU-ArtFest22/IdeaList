@@ -32,7 +32,7 @@ angular.module('app', ['ngRoute'], function($locationProvider) {
       $http.post('/api/get_idea', query)
         .success(function(data) {
           _.each(data, function(element) {
-            element.time = moment(element.created_at).format('MMMM Do YYYY, h:mm:ss a');
+            element.time = moment(element.created_at).fromNow();
           });
           $scope.ideaList = _.clone(data);
         })
@@ -41,6 +41,46 @@ angular.module('app', ['ngRoute'], function($locationProvider) {
         });
       $scope.newIdea = function() {
         $scope.addIdea = !$scope.addIdea;
+      };
+    }
+  ])
+  .controller('modelController', [
+    '$scope',
+    '$http',
+    '$location',
+    function(
+      $scope,
+      $http,
+      $location
+    ) {
+      var linkInfo = function() {
+        $scope.waiting = true;
+        if ($scope.form.link !== '') {
+          $http.post('/api/link_info', {
+              url: $scope.form.link
+            })
+            .success(function(data) {
+              $scope.waiting = false;
+              $scope.form.image = data.image;
+              $scope.form.tags.push(data.tags);
+            })
+            .error(function(err) {
+              console.log(err);
+            });
+        }
+      };
+      $scope.form = {
+        link: '',
+        tags: []
+      };
+      $scope.$watch('form.link', _.debounce(linkInfo, 150));
+      $scope.submitForm = function() {
+        var data = $scope.form;
+        $http
+          .post('/api/create_idea', data)
+          .success(function() {
+
+          });
       };
     }
   ]);

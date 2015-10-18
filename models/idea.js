@@ -9,10 +9,6 @@ var IdeaSchema = new Schema({
     ref: 'User',
     required: true
   },
-  title: {
-    type: String,
-    default: ''
-  },
   content: {
     type: String,
     default: ''
