@@ -17,10 +17,6 @@ angular.module('app', ['ngRoute'], function($locationProvider) {
     $rootScope.$on('$routeChangeSuccess', function() {
       history.push($location.$$path);
     });
-    $rootScope.back = function() {
-      var prevUrl = history.length > 1 ? history.splice(-2)[0] : '/';
-      $location.path(prevUrl);
-    };
   })
   .controller('ideaController', [
     '$scope',
