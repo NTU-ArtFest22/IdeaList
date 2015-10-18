@@ -9,8 +9,9 @@ var _ = require('lodash');
 var Idea = require('../../models').Idea;
 
 var getIdea = function(req, res) {
+  var query = req.body;
   return Idea
-    .findAsync()
+    .findAsync(query)
     .then(function(data) {
       return Idea.populateAsync(data, {
         path: 'user',
@@ -71,7 +72,7 @@ var deleteIdea = function(req, res) {
     });
 };
 
-app.get('/get_idea', getIdea);
+app.post('/get_idea', getIdea);
 
 app.use(middleWare.apiLoginCheck);
 

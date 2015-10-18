@@ -13,6 +13,7 @@ var IdeaSchema = new Schema({
     type: String,
     default: ''
   }],
+  image: String,
   tags: [String],
   lastUpdateBy: {
     type: Schema.Types.ObjectId,

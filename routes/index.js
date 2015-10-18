@@ -10,6 +10,7 @@ function passLocals(req, pageTitle, object) {
   var error = req.flash('error');
   var message = req.flash('message');
   return _.extend({
+    defaultImage: 'placeholder.png',
     error: error,
     message: message,
     pageTitle: pageTitle
@@ -20,7 +21,6 @@ module.exports = function(app) {
 
   app.use('/api', api);
   /*----- index page -----*/
-
   app.get('/', function(req, res) {
     return res.render('index', passLocals(req, 'index', {
       user: req.user

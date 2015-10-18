@@ -1,17 +1,18 @@
 doctype html
-html(lang="en")
+html(lang="en" ng-app='app')
   head
+    base(href="/")
     title
       = pageTitle
     include templates/stylesheet
-  body
+  body(ng-controller='ideaController')
     .nav
       if user
-        a(href='/logout') Logout
+        a(href='/logout' target="_self") Logout
         .name Hello #{user.name}
       else
-        a(href='/login/facebook') Facebook Login
-    #container.col
+        a(href='/login/facebook' target="_self") Facebook Login
+    div(ng-view)
   footer
     include templates/javascript
     

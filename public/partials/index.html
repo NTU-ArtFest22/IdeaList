@@ -1,0 +1,12 @@
+<div id="wrapper">
+  <div id="columns">
+    <div ng-repeat="idea in ideaList" class="pin">
+      <img ng-src="{{idea.image}}" ng-init="idea.image = (idea.image)? idea.image: &quot;placeholder.png&quot;"/>
+      <div ng-repeat="tag in idea.tags" class="tag">
+        <a ng-href="/?tags={{tag}}" ng-bind='tag'></a>
+      </div>
+      <p ng-bind="idea.content"></p>
+      <p ng-bind="idea.time"></p>
+    </div>
+  </div>
+</div>
