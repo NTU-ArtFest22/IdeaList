@@ -16,6 +16,7 @@
     "errorhandler": "^1.4.2",
     "express": "^4.13.3",
     "express-session": "~1.11.3",
+    "html-escape": "^1.0.2",
     "jade": "^1.11.0",
     "lodash": "^3.10.1",
     "method-override": "^2.3.5",

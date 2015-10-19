@@ -6,16 +6,27 @@ html(lang="en" ng-app='app')
       = pageTitle
     include templates/stylesheet
   body(ng-controller='ideaController')
+    .navbar.navbar-default.navbar-fixed-top
+      .container-fluid
+        ul.nav.navbar-nav
+          li.btn.btn-danger.nav-li
+            a.nav-block.white(href='#' data-toggle="modal" data-target="#newIdea" ng-click='newIdea();').
+              Post new idea
+        ul.nav.navbar-nav.navbar-right
+          if user
+            li.btn.btn-default.nav-li
+              a.nav-block
+                = user.name
+            li.btn.btn-default.nav-li
+              a.nav-block(href='/logout' target="_self").
+                Logout
+          else
+            li.btn.btn-default.nav-li
+              a.nav-block(href='/login/facebook' target="_self").
+                Facebook Login
     #wrapper.container-fluid
-      .row
-        .col-md-3.btn.btn-success(data-toggle="modal" data-target="#newIdea" ng-click='newIdea();') NEW idea!
-        if user
-          .right.col-md-3.name Hello #{user.name}
-          a.right.col-md-3.btn.btn-primary(href='/logout' target="_self") Logout
-        else
-          a.right.col-md-4.btn.btn-primary(href='/login/facebook' target="_self") Facebook Login
-      hr
-      .row
+    .container-fluid
+      .row-fluid
         div(ng-view)
   footer
     include templates/javascript
