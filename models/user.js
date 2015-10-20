@@ -13,12 +13,12 @@ var UserSchema = new Schema({
   },
   name: {
     type: String,
-    required: true
   },
   email: {
     type: String,
-    required: true,
-    unique: true
+  },
+  photo: {
+    type: String,
   },
   firstLogin: {
     type: Date,
@@ -58,12 +58,14 @@ UserSchema.statics.findOrCreateOAuthUser = function(profile, done) {
         user['' + profile.authOrigin] = {};
         user['' + profile.authOrigin].id = profile.id;
         user['' + profile.authOrigin].email = profile.emails[0].value;
+        user['' + profile.authOrigin].photo = profile.photos[0].value;
         user['' + profile.authOrigin].name = profile.displayName;
         user.lastLogin = new Date();
         var userSave = user.saveAsync();
         return userSave;
       }
       user = {
+        photo: profile.photos[0].value, 
         name: profile.displayName,
         email: profile.emails[0].value,
         firstName: profile.displayName.split(' ')[0],
@@ -73,6 +75,7 @@ UserSchema.statics.findOrCreateOAuthUser = function(profile, done) {
       user['' + profile.authOrigin] = {};
       user['' + profile.authOrigin].id = profile.id;
       user['' + profile.authOrigin].email = profile.emails[0].value;
+      user['' + profile.authOrigin].photo = profile.photos[0].value;
       user['' + profile.authOrigin].name = profile.displayName;
       return User.create(user);
     })

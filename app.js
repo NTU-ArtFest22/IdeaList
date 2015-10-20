@@ -109,7 +109,7 @@ exports.server = function() {
       clientID: settings.facebook.clientID,
       clientSecret: settings.facebook.clientSecret,
       callbackURL: settings.facebook.callbackURL,
-      profileFields: ['id', 'emails','displayName']
+      profileFields: ['id', 'emails','displayName','photos']
     },
     function(accessToken, refreshToken, profile, done) {
       profile.authOrigin = 'facebook';

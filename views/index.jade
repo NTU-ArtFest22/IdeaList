@@ -34,9 +34,8 @@ html(lang="en" ng-app='app')
         if user
           .col-xs-2.vcenter.row
             .col-xs-6
-              ul.nav.navbar-text
-                .nav-block
-                  = user.name
+              ul.nav.nav-block
+                img.round(src="#{user.photo}")
             .col-xs-6
               ul.nav.navbar-nav
                 li.btn.btn-default.nav-li
@@ -83,8 +82,7 @@ html(lang="en" ng-app='app')
                 .row
                   input.col-xs-5.btn.btn-primary(type="submit")
                   .col-xs-2
-                  button.col-xs-5.btn.btn-default.
-                    Cancel
+                  button.col-xs-5.btn.btn-default(type="button" data-dismiss="modal") Cancel
   footer
     include templates/javascript
     script(type='text/javascript' src='/js/app.js')
