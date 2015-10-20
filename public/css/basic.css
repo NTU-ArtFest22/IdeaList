@@ -1,3 +1,52 @@
+.select2-container{
+  max-height: 60px;
+  overflow: scroll;
+}
+.vcenter {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}
+.single {
+  display: inline-block;
+  background: #FEFEFE;
+  border: 2px solid #FAFAFA;
+  box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+  margin: 0 2px 15px;
+  -webkit-column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+  column-break-inside: avoid;
+  padding: 15px;
+  padding-bottom: 5px;
+  background: -webkit-linear-gradient(45deg, #FFF, #F9F9F9);
+  
+  -webkit-transition: all .2s ease;
+  -moz-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+}
+
+.single:first-child {
+  width: 100%;
+}
+
+.single img {
+  width: 100%;
+  padding: 10px;
+  padding-bottom: 15px;
+  margin-bottom: 5px;
+}
+
+.single p {
+  font: 12px/18px Arial, sans-serif;
+  color: #333;
+  margin: 0;
+}
+
+.navbar-tags{
+  min-width: 300px;
+  width: 100%;
+}
 .nav-li{
   margin: 10px;
 }
@@ -28,10 +77,6 @@ body{
 .backItem{
   opacity: 1 !important;
 }
-.tags{
-  word-wrap: break-word;
-  margin: 10px;
-}
 .tag{
   word-wrap: break-word;
   margin: 3px;
@@ -52,7 +97,6 @@ h1 {
 }
 #wrapper {
   width: 90%;
-  margin: 50px auto;
 }
 #columns {
   -webkit-column-count: 3;

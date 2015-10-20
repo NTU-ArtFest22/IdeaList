@@ -12,6 +12,11 @@ angular.module('app', [
         templateUrl: 'partials/index.html',
         controller: 'ideaController'
       })
+      .state('tags', {
+        url: '/tags?tag',
+        templateUrl: 'partials/index.html',
+        controller: 'ideaController'
+      })
       .state('idea', {
         url: '/idea/:id',
         templateUrl: 'partials/idea.html',
@@ -33,20 +38,65 @@ angular.module('app', [
   }])
   .controller('ideaController', [
     '$scope',
-    '$http',
-    '$location',
+    '$rootScope',
+    '$state',
+    '$stateParams',
     function(
       $scope,
-      $http,
-      $location
+      $rootScope,
+      $state,
+      $stateParams
     ) {
-      $scope.tags = [];
+      if($state.current.name){
+        $rootScope.tags = [];
+      }
+      if (!_.isEmpty($stateParams.array)) {
+        if (_.isArray($stateParams.array)) {
+          $rootScope.tags = $stateParams.array;
+        } else {
+          $rootScope.tags.push($stateParams.array);
+        }
+      }
       $scope.hover = 'init';
       $scope.setHover = function(data) {
         $scope.hover = data;
       };
       $scope.addIdea = false;
+      $scope.newIdea = function() {
+        $scope.addIdea = !$scope.addIdea;
+      };
+    }
+  ])
+  .controller('mainController', [
+    '$scope',
+    '$rootScope',
+    '$http',
+    '$location',
+    '$state',
+    '$stateParams',
+    function(
+      $scope,
+      $rootScope,
+      $http,
+      $location,
+      $state,
+      $stateParams
+    ) {
+      $scope.select2Options = {
+        'multiple': true,
+        'simple_tags': true,
+        'tags': [],
+        'width': '100%'
+      };
+      $scope.tags = [];
+      $rootScope.change_url = true;
+      $http
+        .get('/api/get_tag')
+        .success(function(data) {
+          $scope.select2Options.tags = data;
+        });
       var getIdea = function() {
+        $rootScope.tags = $scope.tags;
         var query;
         if (_.isEmpty($scope.tags)) {
           query = null;
@@ -61,6 +111,12 @@ angular.module('app', [
             })
           }
         }
+        if ($rootScope.change_url) {
+          $location.path('/tags').search({
+            tag: $scope.tags
+          });
+        }
+        $rootScope.change_url = true;
         $http.post('/api/get_idea', query)
           .success(function(data) {
             _.each(data, function(element) {
@@ -72,7 +128,9 @@ angular.module('app', [
             console.log(err);
           });
       }
-      getIdea();
+      $rootScope.$watch('tags', function() {
+        $scope.tags = $rootScope.tags;
+      });
       $scope.$watch('tags', _.debounce(getIdea, 150));
       $scope.newIdea = function() {
         $scope.addIdea = !$scope.addIdea;
@@ -80,19 +138,20 @@ angular.module('app', [
       $scope.pushTag = function(tag) {
         $scope.tags.push(tag);
         $scope.tags = _.uniq($scope.tags)
+        $state.go('tags', {
+          tag: $scope.tags
+        });
       };
-      $scope.initModal = function(idea) {
-        $scope.ideaModal = _.clone(idea);
-        $('#popoverIdea').modal();
-      }
     }
   ])
   .controller('singleIdeaController', [
     '$scope',
+    '$rootScope',
     '$http',
     '$stateParams',
     function(
       $scope,
+      $rootScope,
       $http,
       $stateParams
     ) {
@@ -102,6 +161,8 @@ angular.module('app', [
         .success(function(data) {
           data.time = moment(data.created_at).fromNow();
           $scope.idea = _.clone(data);
+          $rootScope.change_url = false;
+          $rootScope.tags = $scope.idea.tags;
         })
         .error(function(err) {
           console.log(err);
@@ -109,10 +170,6 @@ angular.module('app', [
       $scope.newIdea = function() {
         $scope.addIdea = !$scope.addIdea;
       };
-      $scope.initModal = function(idea) {
-        $scope.ideaModal = _.clone(idea);
-        $('#popoverIdea').modal();
-      }
     }
   ])
   .controller('modalController', [
@@ -123,16 +180,17 @@ angular.module('app', [
       $http
     ) {
       $scope.waiting = false;
+      $scope.select2Options = {
+        'multiple': true,
+        'simple_tags': true,
+        'tags': [],
+        'width': '100%'
+      };
       $http
         .get('/api/get_tag')
         .success(function(data) {
           $scope.select2Options.tags = angular.extend($scope.select2Options.tags, data);
         });
-      $scope.select2Options = {
-        'multiple': true,
-        'simple_tags': true,
-        'tags': []
-      };
       var linkInfo = function() {
         if ($scope.form.link !== '') {
           $scope.waiting = true;

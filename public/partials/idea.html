@@ -1,9 +1,20 @@
-<a ng-href="{{idea.link}}">
-  <img class='img-responsive' ng-src="{{idea.image}}" ng-init="idea.image = (idea.image)? idea.image: &quot;placeholder.png&quot;"/>
-</a>
-<a ng-href="{{idea.link}}" ng-bind="idea.linkTitle"></a>
-<p ng-if='idea.content' ng-bind-html="idea.content | to_trusted "></p>
-<div class="tags">
-  <a class="tag" ng-repeat="tag in idea.tags" ng-click='pushTag(tag)' ng-bind='"#"+tag'></a>
+<div class="single col-xs-12">
+  <div class="row">
+    <div class="col-xs-9" >
+      <a ng-href="{{idea.link}}">
+        <img class='img-responsive' ng-src="{{idea.image}}" ng-init="idea.image = (idea.image)? idea.image: &quot;placeholder.png&quot;"/>
+      </a>
+    </div>
+    <div class="col-xs-3 row" >
+      <div class="col-xs-6" ng-repeat="tag in idea.tags">
+        <a class="tag" ng-click='pushTag(tag)' ng-bind='"#"+tag'></a>
+      </div>
+    </div>
+  </div>
+  <hr/>
+  <a ng-href="{{idea.link}}">
+    <h1 ng-bind="idea.linkTitle"></h1>
+  </a>
+  <p ng-if='idea.content' ng-bind-html="idea.content | to_trusted "></p>
+  <p ng-bind="idea.user.name + ' @ ' + idea.time"></p>
 </div>
-<p ng-bind="idea.user.name + ' @ ' + idea.time"></p>
