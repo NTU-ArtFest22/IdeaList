@@ -55,9 +55,9 @@ module.exports = function(app) {
     req.logout();
     res.redirect('/');
   });
-
-  app.use(function(req, res) {
-    req.flash('error', '404 Page Not Found');
-    return res.redirect('/');
+  app.get('*', function(req, res) {
+    return res.render('index', passLocals(req, 'index', {
+      user: req.user
+    }));
   });
 };

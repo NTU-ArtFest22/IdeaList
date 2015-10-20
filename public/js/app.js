@@ -1,23 +1,25 @@
 'use strict';
 angular.module('app', [
-      'ngRoute',
-      'ui.select2',
-      'ephox.textboxio',
-      'truncate'
-    ],
-    function($locationProvider) {
-      $locationProvider.html5Mode(true);
-    })
-  .config(['$routeProvider', function($routeProvider) {
-    $routeProvider
-      .when('/', {
+    'ui.router',
+    'ui.select2',
+    'ephox.textboxio',
+    'truncate'
+  ])
+  .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $stateProvider
+      .state('home', {
+        url: '/',
         templateUrl: 'partials/index.html',
         controller: 'ideaController'
       })
-      .otherwise({
-        redirectTo: '/'
+      .state('idea', {
+        url: '/idea/:id',
+        templateUrl: 'partials/idea.html',
+        controller: 'singleIdeaController'
       });
-  }])
+    $urlRouterProvider.otherwise('/');
+    $locationProvider.html5Mode(true);
+  })
   .run(function($rootScope, $location) {
     var history = [];
     $rootScope.$on('$routeChangeSuccess', function() {
@@ -38,19 +40,68 @@ angular.module('app', [
       $http,
       $location
     ) {
-      var query = $location.search();
+      $scope.tags = [];
       $scope.hover = 'init';
       $scope.setHover = function(data) {
         $scope.hover = data;
       };
       $scope.addIdea = false;
-      $http.post('/api/get_idea', query)
-        .success(function(data) {
-          var max_length = 150;
-          _.each(data, function(element) {
-            element.time = moment(element.created_at).fromNow();
+      var getIdea = function() {
+        var query;
+        if (_.isEmpty($scope.tags)) {
+          query = null;
+        } else {
+          query = {
+            $and: _.map($scope.tags, function(tag) {
+              return {
+                tags: {
+                  $in: [tag]
+                }
+              }
+            })
+          }
+        }
+        $http.post('/api/get_idea', query)
+          .success(function(data) {
+            _.each(data, function(element) {
+              element.time = moment(element.created_at).fromNow();
+            });
+            $scope.ideaList = _.clone(data);
+          })
+          .error(function(err) {
+            console.log(err);
           });
-          $scope.ideaList = _.clone(data);
+      }
+      getIdea();
+      $scope.$watch('tags', _.debounce(getIdea, 150));
+      $scope.newIdea = function() {
+        $scope.addIdea = !$scope.addIdea;
+      };
+      $scope.pushTag = function(tag) {
+        $scope.tags.push(tag);
+        $scope.tags = _.uniq($scope.tags)
+      };
+      $scope.initModal = function(idea) {
+        $scope.ideaModal = _.clone(idea);
+        $('#popoverIdea').modal();
+      }
+    }
+  ])
+  .controller('singleIdeaController', [
+    '$scope',
+    '$http',
+    '$stateParams',
+    function(
+      $scope,
+      $http,
+      $stateParams
+    ) {
+      $scope.idea_id = $stateParams.id;
+      $scope.addIdea = false;
+      $http.get('/api/get_one_idea/' + $scope.idea_id)
+        .success(function(data) {
+          data.time = moment(data.created_at).fromNow();
+          $scope.idea = _.clone(data);
         })
         .error(function(err) {
           console.log(err);
@@ -58,9 +109,13 @@ angular.module('app', [
       $scope.newIdea = function() {
         $scope.addIdea = !$scope.addIdea;
       };
+      $scope.initModal = function(idea) {
+        $scope.ideaModal = _.clone(idea);
+        $('#popoverIdea').modal();
+      }
     }
   ])
-  .controller('modelController', [
+  .controller('modalController', [
     '$scope',
     '$http',
     function(
@@ -87,7 +142,12 @@ angular.module('app', [
             .success(function(data) {
               $scope.waiting = false;
               $scope.form.image = data.image;
+              if (data.keywords) {
+                var keywords = data.keywords.split(', ');
+              }
               $scope.form.tags = angular.extend($scope.form.tags, data.tags);
+              $scope.form.tags = angular.extend($scope.form.tags, keywords);
+              $scope.form.linkTitle = data.title;
             })
             .error(function(err) {
               console.log(err);
@@ -105,9 +165,7 @@ angular.module('app', [
         console.log(data);
         $http
           .post('/api/create_idea', data)
-          .success(function() {
-
-          });
+          .success(function() {});
       };
     }
   ]);

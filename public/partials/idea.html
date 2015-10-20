@@ -1,0 +1,9 @@
+<a ng-href="{{idea.link}}">
+  <img class='img-responsive' ng-src="{{idea.image}}" ng-init="idea.image = (idea.image)? idea.image: &quot;placeholder.png&quot;"/>
+</a>
+<a ng-href="{{idea.link}}" ng-bind="idea.linkTitle"></a>
+<p ng-if='idea.content' ng-bind-html="idea.content | to_trusted "></p>
+<div class="tags">
+  <a class="tag" ng-repeat="tag in idea.tags" ng-click='pushTag(tag)' ng-bind='"#"+tag'></a>
+</div>
+<p ng-bind="idea.user.name + ' @ ' + idea.time"></p>

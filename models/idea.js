@@ -12,6 +12,9 @@ var IdeaSchema = new Schema({
   link: {
     type: String
   },
+  linkTitle:{
+    type: String
+  },
   content: {
     type: String,
     default: ''

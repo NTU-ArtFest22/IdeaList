@@ -1,58 +1,15 @@
 <div id="columns">
-  <div ng-repeat="idea in ideaList" class="pin" ng-class="{backItem:hover === 'init', backItem: hover === idea._id }" ng-mouseenter="setHover(idea._id)" ng-mouseleave="setHover('init')">
-    <a ng-href="{{idea.link}}">
+  <div class="pin" ng-click='initModal(idea);' ng-repeat="idea in ideaList" ng-class="{backItem:hover === 'init', backItem: hover === idea._id }" ng-mouseenter="setHover(idea._id)" ng-mouseleave="setHover('init')">
+    <a ui-sref="idea({id: idea._id})">
       <img class='img-responsive' ng-src="{{idea.image}}" ng-init="idea.image = (idea.image)? idea.image: &quot;placeholder.png&quot;"/>
+      <p ng-bind="idea.linkTitle"></p>
+      <p ng-if='idea.content' ng-bind-html="idea.content | words: 15 | to_trusted "></p>
     </a>
-    <p ng-if='idea.content' ng-bind-html="idea.content | words: 15 | to_trusted "></p>
     <div class="tags">
-      <a class="tag" ng-repeat="tag in idea.tags" ng-href="/?tags={{tag}}" ng-bind='"#"+tag'></a>
+      <a class="tag" ng-repeat="tag in idea.tags" ng-click='pushTag(tag)' ng-bind='"#"+tag'></a>
     </div>
-    <p ng-bind="idea.user.name + ' @ ' + idea.time"></p>
-  </div>
-</div>
-<div id="newIdea" class="modal fade" role="dialog" ng-controller='modelController'>
-  <div class="modal-dialog modal-lg">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Hit me with new ideas</h4>
-      </div>
-      <form name="newIdea" action="#" ng-submit="submitForm()">
-        <div class="modal-margin container-fluid">
-          <div class="row">
-            <div ng-show='waiting' class='uil-magnify-css hover-on-image' style='-webkit-transform:scale(0.55)'>
-              <div class="group">
-                <div class="grip"></div>
-                <div class="inner-circle"></div>
-                <div class="outer-circle"></div>
-              </div>
-            </div>
-            <img class='col-xs-4 img-responsive' ng-src="{{form.image}}" ng-init="form.image = (form.image)? form.image: &quot;placeholder.png&quot;"/>
-            <div class="col-xs-8">
-              <div class="form-group">
-                <label for="link">Link</label>
-                <input ng-model='form.link' type="text" class="form-control" id="link" placeholder="Link">
-              </div>
-              <div class="form-group">
-                <label for="tag">Tag</label>
-                <input type="hidden" ui-select2="select2Options" ng-model="form.tags" class="select2Input" id="tag">
-              </div>
-            </div>
-          </div>
-          <div class="row content-block">
-            <label for="content">Content</label>
-            <textarea class="col-xs-12" ng-required="form.contentRequired" tbio ng-model='form.content' type="text" class="form-control" id="content">
-            </textarea>
-          </div>
-          <hr>
-          <div class="row">
-            <input type="submit" class="col-xs-5 btn btn-primary" ng-disabled="newIdea.$invalid">
-            <div class="col-xs-2"></div>
-            <button type="button" class="col-xs-5 btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <a ui-sref="idea({id: idea._id})">
+      <p ng-bind="idea.user.name + ' @ ' + idea.time"></p>
+    </a>
   </div>
 </div>

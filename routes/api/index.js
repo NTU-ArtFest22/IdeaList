@@ -31,8 +31,31 @@ var linkInfo = function(req, res) {
       return res.json('ENOTFOUND');
     });
 };
+var getOneIdea = function(req, res) {
+  var query = {
+    _id: req.params.id
+  };
+  return Idea
+    .findOneAsync(query)
+    .then(function(data) {
+      return Idea.populateAsync(data, {
+        path: 'user',
+        select: 'name'
+      });
+    })
+    .then(function(data) {
+      return res.json(data);
+    })
+    .error(function(err) {
+      console.log(err.stack);
+      return res.status(500).json(err);
+    });
+};
 var getIdea = function(req, res) {
   var query = req.body;
+  if (query && query.tags && _.isEmpty(query.tags.$in)) {
+    delete query.tags;
+  }
   return Idea
     .findAsync(query)
     .then(function(data) {
@@ -54,7 +77,7 @@ var getTag = function(req, res) {
   return Tag
     .findAsync(query)
     .then(function(data) {
-      data = _.map(data,'name');
+      data = _.map(data, 'name');
       return res.json(data);
     })
     .error(function(err) {
@@ -130,6 +153,7 @@ var deleteIdea = function(req, res) {
     });
 };
 app.get('/get_tag', getTag);
+app.get('/get_one_idea/:id', getOneIdea);
 app.post('/link_info', linkInfo);
 app.post('/get_idea', getIdea);
 app.use(middleWare.apiLoginCheck);

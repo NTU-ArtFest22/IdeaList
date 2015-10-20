@@ -5,7 +5,7 @@ html(lang="en" ng-app='app')
     title
       = pageTitle
     include templates/stylesheet
-  body(ng-controller='ideaController')
+  body
     .navbar.navbar-default.navbar-fixed-top
       .container-fluid
         ul.nav.navbar-nav
@@ -26,8 +26,40 @@ html(lang="en" ng-app='app')
                 Facebook Login
     #wrapper.container-fluid
     .container-fluid
-      .row-fluid
-        div(ng-view)
+      div(ui-view)
+      #newIdea.modal.fade(role="dialog" ng-controller='modalController')
+        .modal-dialog.modal-lg
+          .modal-content
+            .modal-header
+              button(type="button" class="close" data-dismiss="modal") &times;
+              h4.modal-title Hit me with new ideas
+            form(name="newIdea" action="#" ng-submit="submitForm()")
+              .modal-margin.container-fluid
+                .row
+                  .uil-magnify-css.hover-on-image(ng-show='waiting' style='-webkit-transform:scale(0.55)')
+                    .group
+                      .grip
+                      .inner-circle
+                      .outer-circle
+                  img.col-xs-4.img-responsive(ng-src="{{form.image}}" ng-init="form.image = (form.image)? form.image: 'placeholder.png'")
+                  .col-xs-8
+                    .form-group
+                      label Title
+                      p(ng-bind='form.linkTitle' style='min-height: 20px;')
+                    .form-group
+                      label(for="link") Link
+                      input.form-control(ng-model='form.link' type="text" id="link" placeholder="Link")
+                    .form-group
+                      label(for="tag") Tag
+                      input#tag.select2Input(type="hidden" ui-select2="select2Options" ng-model="form.tags")
+                .row.content-block
+                  label(for="content") Content
+                  textarea#content.col-xs-12.form-control(tbio ng-model='form.content' type="text")
+                hr
+                .row
+                  input.col-xs-5.btn.btn-primary(type="submit")
+                  .col-xs-2
+                  button.col-xs-5.btn.btn-default(type="button" data-dismiss="modal") Close
   footer
     include templates/javascript
     script(type='text/javascript' src='/js/app.js')

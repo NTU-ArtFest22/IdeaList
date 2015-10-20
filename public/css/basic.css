@@ -23,16 +23,19 @@
 }
 body{
   background: #e9eaed;
-  min-width: 600px;
+  min-width: 800px;
 }
 .backItem{
   opacity: 1 !important;
 }
 .tags{
+  word-wrap: break-word;
   margin: 10px;
 }
 .tag{
+  word-wrap: break-word;
   margin: 3px;
+  cursor: pointer;
 }
 .select2Input{
   width: 100%;
@@ -64,6 +67,7 @@ h1 {
 }
 
 .pin {
+  max-width: 250px;
   display: inline-block;
   background: #FEFEFE;
   border: 2px solid #FAFAFA;
