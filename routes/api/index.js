@@ -10,6 +10,12 @@ var _ = require('lodash');
 var Idea = require('../../models').Idea;
 var Tag = require('../../models').Tag;
 
+var config = require('../../settings');
+
+var Slackbot = require('slackbot');
+var slackbot = new Slackbot(config.slackTeam, config.slackKey);
+Promise.promisifyAll(slackbot);
+
 var linkInfo = function(req, res) {
   var url = req.body.url;
   return request
@@ -107,13 +113,27 @@ var createIdea = function(req, res) {
       });
   });
   var idea = new Idea(data);
+  var ideaJson;
   return Promise
     .settle(promiseArray)
     .then(function() {
       return idea.saveAsync();
     })
     .then(function(data) {
-      return res.json(data);
+      ideaJson = data;
+      return Idea.populateAsync(data, {
+        path: 'user',
+        select: 'name'
+      });
+    })
+    .then(function(data) {
+      var idea = data[0];
+      var message = '```' + 'A new idea is added by ' + idea.user.name + '\n' +
+        'Check it out at: ' + 'http://localhost:3000/' + 'idea/' + idea._id + '```';
+      return slackbot.sendAsync('@howard', message);
+    })
+    .then(function(data) {
+      return res.json(ideaJson);
     })
     .error(function(err) {
       console.log(err.stack);

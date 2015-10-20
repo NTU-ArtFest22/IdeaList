@@ -13,7 +13,7 @@ module.exports = {
   emailFrom: 'Email Server <email_server@mail.com>',
   mongooseDebug: false,
   slackKey: 'slack_key',
-  slackTeam: 'slack_team',
+  slackTeam: 'ntuaf',
   slackErrorChannel: '#error',
   facebook:{
     clientID:'1017275854991795',
