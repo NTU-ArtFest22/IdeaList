@@ -92,6 +92,7 @@ var getTag = function(req, res) {
     });
 };
 var createIdea = function(req, res) {
+  console.log('err');
   var data = _.clone(req.body);
   data.user = req.user._id;
   if (_.isEmpty(data.tags)) {
@@ -136,6 +137,8 @@ var createIdea = function(req, res) {
       return res.json(ideaJson);
     })
     .error(function(err) {
+      console.log('err');
+      console.log(err);
       console.log(err.stack);
       return res.status(500).json(err);
     });

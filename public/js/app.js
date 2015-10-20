@@ -220,10 +220,8 @@ angular.module('app', [
       $scope.$watch('form.link', _.debounce(linkInfo, 150));
       $scope.submitForm = function() {
         var data = $scope.form;
-        console.log(data);
         $http
           .post('/api/create_idea', data)
-          .success(function() {});
       };
     }
   ]);
