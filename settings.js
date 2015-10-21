@@ -8,10 +8,7 @@ module.exports = {
   port: 3000,
   session: {
     redis: {
-      host: 'ec2-54-225-132-156.compute-1.amazonaws.com',
-      port: 15079,
-      pass: 'pett2fv8866n97df52a8g4pf4lq',
-      url: 'redis://h:pett2fv8866n97df52a8g4pf4lq@ec2-54-225-132-156.compute-1.amazonaws.com:15079'
+      url: process.env.REDIS_URL
     }
   },
   emailFrom: 'Email Server <email_server@mail.com>',
