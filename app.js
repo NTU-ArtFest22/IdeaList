@@ -147,7 +147,7 @@ exports.server = function() {
     console.log('running test environment');
     mongoURI = 'mongodb://' + settings.dbuser + ':' + settings.dbpass + '@' + settings.host + '/' + 'test_' + settings.db;
   } else {
-    mongoURI = 'mongodb://' + settings.dbuser + ':' + settings.dbpass + '@' + settings.host + '/' + 'test_' + settings.db;
+    mongoURI = 'mongodb://' + settings.dbuser + ':' + settings.dbpass + '@' + settings.host + '/' + settings.db;
   }
   mongoose.connect(mongoURI);
   mongoose.connection.on('connected', function() {
