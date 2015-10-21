@@ -13,7 +13,7 @@ module.exports = {
   },
   emailFrom: 'Email Server <email_server@mail.com>',
   mongooseDebug: false,
-  slackKey: 'IMPJXUedcy3tDvlLEdRGD1v3',
+  slackKey: '7n7wTdASzoJujjeAZuiedsPp',
   slackTeam: 'ntuaf',
   slackErrorChannel: '#error',
   facebook:{
