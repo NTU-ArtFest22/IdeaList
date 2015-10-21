@@ -22,6 +22,6 @@ module.exports = {
   facebook:{
     clientID:'1017275854991795',
     clientSecret: 'abcbff20a14c8b9e33eb3171c110265e',
-    callbackURL: 'http://localhost:3000/login/facebook/callback'
+    callbackURL: 'http://ntuaf-idea-pool.herokuapp.com/login/facebook/callback'
   }
 };
