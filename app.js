@@ -165,7 +165,7 @@ exports.server = function() {
   });
 
   var port = app.get('port');
-  http.createServer(app).listen(port, function() {
+  http.createServer(app).listen(process.env.PORT || port, function() {
     console.log('Express server listening on port ' + port);
   });
   // If the Node process ends, close the Mongoose connection 
