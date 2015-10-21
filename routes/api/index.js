@@ -131,7 +131,7 @@ var createIdea = function(req, res) {
       var idea = data[0];
       var message = '```' + 'A new idea is added by ' + idea.user.name + '\n' +
         'Check it out at: ' + 'http://ntuaf-idea-pool.herokuapp.com/' + 'idea/' + idea._id + '```';
-      return slackbot.sendAsync('#idea', message);
+      return slackbot.send('#idea', message);
     })
     .then(function(data) {
       return res.json(ideaJson);
