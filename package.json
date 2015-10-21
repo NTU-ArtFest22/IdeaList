@@ -3,12 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "postinstall": "bower install",
-    "start": "node develop.js"
+    "start": "node develop.js",
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "dependencies": {
     "bluebird": "^2.9.34",
     "body-parser": "^1.13.3",
+    "bower": "^1.6.3",
     "compression": "^1.5.2",
     "connect-flash": "~0.1.1",
     "connect-multiparty": "^2.0.0",
