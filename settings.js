@@ -1,13 +1,17 @@
 module.exports = {
   cookieSecret: 'cookieSecret',
   sessionSecret: 'sessionSecret',
-  db: 'idea_list',
-  host: 'localhost',
+  db: 'heroku_r3sw6njg',
+  host: 'ds041924.mongolab.com:41924',
+  dbuser: 'heroku_r3sw6njg',
+  dbpass: '3t5lplldfln8jnssrvnf4ldas2',
   port: 3000,
   session: {
     redis: {
-      host: 'localhost',
-      port: 6379
+      host: 'ec2-54-225-132-156.compute-1.amazonaws.com',
+      port: 15079,
+      pass: 'pett2fv8866n97df52a8g4pf4lq',
+      url: 'redis://h:pett2fv8866n97df52a8g4pf4lq@ec2-54-225-132-156.compute-1.amazonaws.com:15079'
     }
   },
   emailFrom: 'Email Server <email_server@mail.com>',
