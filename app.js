@@ -168,31 +168,3 @@ exports.server = function() {
     });
   });
 };
-<<<<<<< HEAD
-=======
-
-// process.on('unhandledRejection', function(reason, p) {
-//   console.log(reason);
-//   console.log(p);
-//   if (process.env.NODE_ENV === 'production') {
-//     slackbot.send(settings.slackErrorChannel,
-//       '@everyone, ```  (unhandledRejection) Possibly Unhandled Rejection at: Promise ' + p + ' reason: ' + reason + '```',
-//       function() {
-//         process.exit(1);
-//       });
-//   } else {
-//     process.exit(1);
-//   }
-// });
-
-// process.on('uncaughtException', function(err) {
-//   console.log(err.stack);
-//   if (process.env.NODE_ENV === 'production') {
-//     slackbot.send(settings.slackErrorChannel, '@everyone, ```  (unhandledRejection) ' + err.stack + '```', function() {
-//       process.exit(1);
-//     });
-//   } else {
-//     process.exit(1);
-//   }
-// });
->>>>>>> change some configuration for heroku
