@@ -3,7 +3,8 @@ angular.module('app', [
     'ui.router',
     'ui.select2',
     'ephox.textboxio',
-    'truncate'
+    'truncate',
+    'wu.masonry'
   ])
   .config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     $stateProvider
@@ -47,7 +48,8 @@ angular.module('app', [
       $state,
       $stateParams
     ) {
-      if($state.current.name){
+      console.log('ideaController');
+      if ($state.current.name === 'home') {
         $rootScope.tags = [];
       }
       if (!_.isEmpty($stateParams.array)) {
@@ -82,27 +84,28 @@ angular.module('app', [
       $state,
       $stateParams
     ) {
-      $scope.select2Options = {
+      console.log('mainController');
+      $rootScope.tags = [];
+      $rootScope.select2Options = {
         'multiple': true,
-        'simple_tags': true,
-        'tags': [],
-        'width': '100%'
+        'simple_tags': false,
+        'width': '100%',
+        'tags': []
       };
-      $scope.tags = [];
-      $rootScope.change_url = true;
       $http
         .get('/api/get_tag')
         .success(function(data) {
-          $scope.select2Options.tags = data;
+          $rootScope.select2Options.tags = data;
+          $('#tagSearch.select2Input').select2($rootScope.select2Options);
+          console.log($('#tagSearch.select2Input'))
         });
       var getIdea = function() {
-        $rootScope.tags = $scope.tags;
         var query;
-        if (_.isEmpty($scope.tags)) {
+        if (_.isEmpty($rootScope.tags)) {
           query = null;
         } else {
           query = {
-            $and: _.map($scope.tags, function(tag) {
+            $and: _.map($rootScope.tags, function(tag) {
               return {
                 tags: {
                   $in: [tag]
@@ -113,7 +116,7 @@ angular.module('app', [
         }
         if ($rootScope.change_url) {
           $location.path('/tags').search({
-            tag: $scope.tags
+            tag: $rootScope.tags
           });
         }
         $rootScope.change_url = true;
@@ -122,7 +125,7 @@ angular.module('app', [
             _.each(data, function(element) {
               element.time = moment(element.created_at).fromNow();
             });
-            $scope.ideaList = _.clone(data);
+            $rootScope.ideaList = _.clone(data);
           })
           .error(function(err) {
             console.log(err);
@@ -136,10 +139,10 @@ angular.module('app', [
         $scope.addIdea = !$scope.addIdea;
       };
       $scope.pushTag = function(tag) {
-        $scope.tags.push(tag);
-        $scope.tags = _.uniq($scope.tags)
+        $rootScope.tags.push(tag);
+        $rootScope.tags = _.uniq($rootScope.tags)
         $state.go('tags', {
-          tag: $scope.tags
+          tag: $rootScope.tags
         });
       };
     }
@@ -155,6 +158,7 @@ angular.module('app', [
       $http,
       $stateParams
     ) {
+      console.log('singleIdeaController')
       $scope.idea_id = $stateParams.id;
       $scope.addIdea = false;
       $http.get('/api/get_one_idea/' + $scope.idea_id)
