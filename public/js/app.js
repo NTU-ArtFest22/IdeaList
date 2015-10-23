@@ -219,7 +219,7 @@ angular.module('app', [
       $scope.waiting = false;
       $scope.select2Options = {
         'multiple': true,
-        'simple_tags': true,
+        'simple_tags': false,
         'tags': [],
         'width': '100%'
       };
@@ -227,6 +227,7 @@ angular.module('app', [
         .get('/api/get_tag')
         .success(function(data) {
           $scope.select2Options.tags = angular.extend($scope.select2Options.tags, data);
+          console.log($scope.select2Options)
         });
       var linkInfo = function() {
         if ($scope.form.link !== '') {
@@ -235,13 +236,28 @@ angular.module('app', [
               url: $scope.form.link
             })
             .success(function(data) {
+              console.log(data)
               $scope.waiting = false;
               $scope.form.image = data.image;
               if (data.keywords) {
                 var keywords = data.keywords.split(', ');
               }
-              $scope.form.tags = angular.extend($scope.form.tags, data.tags);
+              console.log($scope.form.tags)
+              $scope.form.tags = angular.extend($scope.form.tags, _.map(data.tags, function(tag) {
+                return {
+                  id: tag,
+                  text: tag
+                }
+              }));
+              console.log($scope.form.tags)
               $scope.form.tags = angular.extend($scope.form.tags, keywords);
+              $scope.form.tags = angular.extend($scope.form.tags, _.map(keywords, function(tag) {
+                return {
+                  id: tag,
+                  text: tag
+                }
+              }));
+              console.log($scope.form.tags)
               $scope.form.linkTitle = data.title;
             })
             .error(function(err) {

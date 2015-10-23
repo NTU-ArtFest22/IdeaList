@@ -102,20 +102,23 @@ var createIdea = function(req, res) {
     data.tags = ['uncategorized'];
   }
   var promiseArray = [];
+  var tags = [];
   _.each(data.tags, function(tag) {
+    tags.push(tag.text);
     return Tag
       .findOneAsync({
-        name: tag
+        name: tag.text
       })
       .then(function(data) {
         if (!data) {
           var newTag = new Tag({
-            name: tag
+            name: tag.text
           });
           return newTag.saveAsync();
         }
       });
   });
+  data.tags = tags;
   var idea = new Idea(data);
   var ideaJson;
   return Promise
@@ -134,7 +137,7 @@ var createIdea = function(req, res) {
       var idea = data[0];
       var message = '```' + 'A new idea is added by ' + idea.user.name + '\n' +
         'Check it out at: ' + 'http://ntuaf-idea-pool.herokuapp.com/' + 'idea/' + idea._id + '```';
-      return slackbot.sendAsync('#idea', message);
+      return slackbot.sendAsync('#ideas', message);
     })
     .then(function(data) {
       return res.json(ideaJson);
