@@ -79,11 +79,15 @@ var getIdea = function(req, res) {
     });
 };
 var getTag = function(req, res) {
-  var query = req.query;
   return Tag
-    .findAsync(query)
+    .findAsync()
     .then(function(data) {
-      data = _.map(data, 'name');
+      data = _.map(data, function(element) {
+        return {
+          id: element._id,
+          text: element.name
+        }
+      });
       return res.json(data);
     })
     .error(function(err) {
@@ -92,7 +96,6 @@ var getTag = function(req, res) {
     });
 };
 var createIdea = function(req, res) {
-  console.log('err');
   var data = _.clone(req.body);
   data.user = req.user._id;
   if (_.isEmpty(data.tags)) {
@@ -137,8 +140,6 @@ var createIdea = function(req, res) {
       return res.json(ideaJson);
     })
     .error(function(err) {
-      console.log('err');
-      console.log(err);
       console.log(err.stack);
       return res.status(500).json(err);
     });

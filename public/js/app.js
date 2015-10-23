@@ -52,13 +52,27 @@ angular.module('app', [
       if ($state.current.name === 'home') {
         $rootScope.tags = [];
       }
-      if (!_.isEmpty($stateParams.array)) {
-        if (_.isArray($stateParams.array)) {
-          $rootScope.tags = $stateParams.array;
+      var select2_tag = _.map($stateParams.tag, function(tag) {
+        return {
+          id: tag,
+          text: tag
+        }
+      });
+      if (!_.isEmpty($stateParams.tag)) {
+        if (_.isArray($stateParams.tag)) {
+          $rootScope.tags = select2_tag;
+          $rootScope.tags = _.uniq($rootScope.tags);
         } else {
-          $rootScope.tags.push($stateParams.array);
+          var tag = $stateParams.tag;
+          $rootScope.tags.push({
+            id: tag,
+            text: tag
+          });
+          $rootScope.tags = _.uniq($rootScope.tags);
         }
       }
+      console.log($rootScope.tags)
+      console.log($stateParams.tag)
       $scope.hover = 'init';
       $scope.setHover = function(data) {
         $scope.hover = data;
@@ -85,30 +99,41 @@ angular.module('app', [
       $stateParams
     ) {
       console.log('mainController');
+      jQuery.ajaxSetup({
+        cache: true
+      });
       $rootScope.tags = [];
       $rootScope.select2Options = {
         'multiple': true,
         'simple_tags': false,
         'width': '100%',
-        'tags': []
+        'ajax': { // instead of writing the function to execute the request we use Select2's convenient helper
+          url: "/api/get_tag",
+          dataType: 'json',
+          results: function(data, page) {
+            return {
+              results: data
+            };
+          }
+        },
       };
-      $http
-        .get('/api/get_tag')
-        .success(function(data) {
-          $rootScope.select2Options.tags = data;
-          $('#tagSearch.select2Input').select2($rootScope.select2Options);
-          console.log($('#tagSearch.select2Input'))
-        });
       var getIdea = function() {
         var query;
+        var tag_name_array = [];
         if (_.isEmpty($rootScope.tags)) {
           query = null;
         } else {
           query = {
             $and: _.map($rootScope.tags, function(tag) {
+              var tag_name = tag;
+              if (tag_name.text) {
+                tag_name = tag_name.text;
+                tag_name_array.push(tag_name)
+                tag_name_array = _.uniq(tag_name_array)
+              }
               return {
                 tags: {
-                  $in: [tag]
+                  $in: [tag_name]
                 }
               }
             })
@@ -116,7 +141,7 @@ angular.module('app', [
         }
         if ($rootScope.change_url) {
           $location.path('/tags').search({
-            tag: $rootScope.tags
+            tag: tag_name_array
           });
         }
         $rootScope.change_url = true;
@@ -131,18 +156,21 @@ angular.module('app', [
             console.log(err);
           });
       }
-      $rootScope.$watch('tags', function() {
-        $scope.tags = $rootScope.tags;
-      });
       $scope.$watch('tags', _.debounce(getIdea, 150));
       $scope.newIdea = function() {
         $scope.addIdea = !$scope.addIdea;
       };
       $scope.pushTag = function(tag) {
-        $rootScope.tags.push(tag);
+        $rootScope.tags.push({
+          id: tag,
+          text: tag
+        });
         $rootScope.tags = _.uniq($rootScope.tags)
+        $rootScope.link_params = _.map($rootScope.tags, function(tag) {
+          return tag.text;
+        });
         $state.go('tags', {
-          tag: $rootScope.tags
+          tag: $rootScope.link_params
         });
       };
     }
@@ -166,7 +194,12 @@ angular.module('app', [
           data.time = moment(data.created_at).fromNow();
           $scope.idea = _.clone(data);
           $rootScope.change_url = false;
-          $rootScope.tags = $scope.idea.tags;
+          $rootScope.tags = _.map($scope.idea.tags, function(tag) {
+            return {
+              id: tag,
+              text: tag
+            }
+          });
         })
         .error(function(err) {
           console.log(err);

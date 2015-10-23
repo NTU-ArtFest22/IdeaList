@@ -15,6 +15,6 @@
   <a ng-href="{{idea.link}}">
     <h1 ng-bind="idea.linkTitle"></h1>
   </a>
-  <p ng-if='idea.content' ng-bind-html="idea.content | to_trusted "></p>
-  <p ng-bind="idea.user.name + ' @ ' + idea.time"></p>
+  <p class='idea-content' ng-if='idea.content' ng-bind-html="idea.content | to_trusted "></p>
+  <p class='timestamp' ng-bind="idea.user.name + ' @ ' + idea.time"></p>
 </div>
