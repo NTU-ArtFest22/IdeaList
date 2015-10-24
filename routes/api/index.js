@@ -64,7 +64,12 @@ var getIdea = function(req, res) {
     delete query.tags;
   }
   return Idea
-    .findAsync(query)
+    .findAsync({
+      $query: query,
+      $orderby: {
+        created_at: -1
+      }
+    })
     .then(function(data) {
       return Idea.populateAsync(data, {
         path: 'user',

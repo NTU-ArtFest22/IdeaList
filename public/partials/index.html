@@ -1,5 +1,5 @@
-<div masonry reload-on-show column-width="300">
-  <div class="pin masonry-brick" ng-click='initModal(idea);' ng-repeat="idea in $root.ideaList" ng-class="{backItem:hover === 'init', backItem: hover === idea._id }" ng-mouseenter="setHover(idea._id)" ng-mouseleave="setHover('init')">
+<div masonry preserve-order reload-on-show column-width="300">
+  <div class="pin masonry-brick" ng-click='initModal(idea);' ng-repeat="idea in $root.ideaList | orderBy:'-created_at'" ng-class="{backItem:hover === 'init', backItem: hover === idea._id }" ng-mouseenter="setHover(idea._id)" ng-mouseleave="setHover('init')">
     <a ui-sref="idea({id: idea._id})">
       <img class='img-responsive' ng-src="{{idea.image}}" ng-init="idea.image = (idea.image)? idea.image: &quot;placeholder.png&quot;" onerror="imgError(this);"/>
       <p ng-bind="idea.linkTitle"></p>
