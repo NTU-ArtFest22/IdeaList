@@ -26,12 +26,6 @@ angular.module('app', [
     $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);
   })
-  .run(function($rootScope, $location) {
-    var history = [];
-    $rootScope.$on('$routeChangeSuccess', function() {
-      history.push($location.$$path);
-    });
-  })
   .filter('to_trusted', ['$sce', function($sce) {
     return function(text) {
       return $sce.trustAsHtml(text);
@@ -71,8 +65,6 @@ angular.module('app', [
           $rootScope.tags = _.uniq($rootScope.tags);
         }
       }
-      console.log($rootScope.tags)
-      console.log($stateParams.tag)
       $scope.hover = 'init';
       $scope.setHover = function(data) {
         $scope.hover = data;
@@ -232,24 +224,22 @@ angular.module('app', [
       var linkInfo = function() {
         if ($scope.form.link !== '') {
           $scope.waiting = true;
-          $http.post('/api/link_info', {
+          $http
+            .post('/api/link_info', {
               url: $scope.form.link
             })
             .success(function(data) {
-              console.log(data)
               $scope.waiting = false;
               $scope.form.image = data.image;
               if (data.keywords) {
                 var keywords = data.keywords.split(', ');
               }
-              console.log($scope.form.tags)
               $scope.form.tags = angular.extend($scope.form.tags, _.map(data.tags, function(tag) {
                 return {
                   id: tag,
                   text: tag
                 }
               }));
-              console.log($scope.form.tags)
               $scope.form.tags = angular.extend($scope.form.tags, keywords);
               $scope.form.tags = angular.extend($scope.form.tags, _.map(keywords, function(tag) {
                 return {
@@ -257,7 +247,6 @@ angular.module('app', [
                   text: tag
                 }
               }));
-              console.log($scope.form.tags)
               $scope.form.linkTitle = data.title;
             })
             .error(function(err) {

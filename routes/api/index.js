@@ -25,6 +25,7 @@ var linkInfo = function(req, res) {
     .spread(function(response, body) {
       if (response.statusCode === 200) {
         var data = extractor(body);
+        console.log(data)
         return res.json(data);
       }
       return res.json('ENOTFOUND');
