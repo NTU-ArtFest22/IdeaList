@@ -29,6 +29,7 @@
     "mongoose-schema-extend": "0.1.7",
     "mongoose-timestamp": "0.4.0",
     "morgan": "^1.6.1",
+    "newrelic": "^1.22.2",
     "nodemailer": "~1.4.0",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "nodemailer-smtp-transport": "^1.0.3",

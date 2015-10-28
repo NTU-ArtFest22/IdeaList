@@ -1,5 +1,5 @@
 'use strict';
-
+require('newrelic');
 Promise = require('bluebird');
 var settings = require('./settings');
 var settings = settings;
