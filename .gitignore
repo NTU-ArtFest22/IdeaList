@@ -7,3 +7,4 @@ temp
 npm-debug.log
 .DS_Store
 .env
+newrelic_agent.log
