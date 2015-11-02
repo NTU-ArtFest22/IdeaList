@@ -100,6 +100,30 @@ var getTag = function(req, res) {
       return res.status(500).json(err);
     });
 };
+var getComment = function(req, res) {
+  var query = {
+    _id: req.params.id
+  };
+  return Idea
+    .findAsync(query)
+    .then(function(data) {
+      var idea = data[0];
+      var message = '```New comment on ' +
+        idea.linkTitle + '\n' +
+        'Check it out at: ' + 'http://ntuaf-idea-pool.herokuapp.com/' + 'idea/' + idea._id + '\n' +
+        '```';
+      return slackbot.sendAsync('#ideas', message);
+    })
+    .then(function(data) {
+      return res.json({
+        msg: 'ok'
+      });
+    })
+    .error(function(err) {
+      console.log(err.stack);
+      return res.status(500).json(err);
+    });
+};
 var createIdea = function(req, res) {
   var data = _.clone(req.body);
   data.user = req.user._id;
@@ -143,7 +167,9 @@ var createIdea = function(req, res) {
     .then(function(data) {
       var idea = data[0];
       var message = '```' + 'A new idea is added by ' + idea.user.name + '\n' +
-        'Check it out at: ' + 'http://ntuaf-idea-pool.herokuapp.com/' + 'idea/' + idea._id + '```';
+        idea.linkTitle + '\n' +
+        'Check it out at: ' + 'http://ntuaf-idea-pool.herokuapp.com/' + 'idea/' + idea._id + '\n' +
+        '```';
       return slackbot.sendAsync('#ideas', message);
     })
     .then(function(data) {
@@ -188,6 +214,7 @@ var deleteIdea = function(req, res) {
 };
 app.get('/get_tag', getTag);
 app.get('/get_one_idea/:id', getOneIdea);
+app.post('/get_comment/:id', getComment);
 app.post('/link_info', linkInfo);
 app.post('/get_idea', getIdea);
 app.use(middleWare.apiLoginCheck);
