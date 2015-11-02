@@ -1,8 +1,8 @@
 'use strict';
+var settings = require('./settings');
+
 require('newrelic');
 Promise = require('bluebird');
-var settings = require('./settings');
-var settings = settings;
 
 var Slackbot = require('slackbot');
 var slackbot = new Slackbot(settings.slackTeam, settings.slackbot);
@@ -133,14 +133,8 @@ exports.server = function() {
     next();
   });
 
-  var mongoURI;
-  //connect to mongodb
-  if (process.env.NODE_ENV === 'test') {
-    console.log('running test environment');
-    mongoURI = 'mongodb://' + settings.host + '/' + 'test_' + settings.db;
-  } else {
-    mongoURI = 'mongodb://' + settings.host + '/' + settings.db;
-  }
+  var mongoURI = settings.mongoURI;
+  console.log(mongoURI);
   mongoose.connect(mongoURI);
   mongoose.connection.on('connected', function() {
     console.log('Mongoose default connection open to ' + mongoURI);

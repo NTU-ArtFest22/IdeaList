@@ -6,3 +6,4 @@ public/components/
 temp
 npm-debug.log
 .DS_Store
+.env
