@@ -1,7 +1,7 @@
 */npm-debug.log
 node_modules/
 .sass-cache
-settings.js
+./settings.js
 public/components/
 temp
 npm-debug.log

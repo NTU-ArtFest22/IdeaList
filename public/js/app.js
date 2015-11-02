@@ -50,7 +50,7 @@ angular.module('app', [
         return {
           id: tag,
           text: tag
-        }
+        };
       });
       if (!_.isEmpty($stateParams.tag)) {
         if (_.isArray($stateParams.tag)) {
@@ -100,7 +100,7 @@ angular.module('app', [
         'simple_tags': false,
         'width': '100%',
         'ajax': { // instead of writing the function to execute the request we use Select2's convenient helper
-          url: "/api/get_tag",
+          url: '/api/get_tag',
           dataType: 'json',
           results: function(data, page) {
             return {
@@ -120,16 +120,16 @@ angular.module('app', [
               var tag_name = tag;
               if (tag_name.text) {
                 tag_name = tag_name.text;
-                tag_name_array.push(tag_name)
-                tag_name_array = _.uniq(tag_name_array)
+                tag_name_array.push(tag_name);
+                tag_name_array = _.uniq(tag_name_array);
               }
               return {
                 tags: {
                   $in: [tag_name]
                 }
-              }
+              };
             })
-          }
+          };
         }
         if ($rootScope.change_url) {
           $location.path('/tags').search({
@@ -147,7 +147,7 @@ angular.module('app', [
           .error(function(err) {
             console.log(err);
           });
-      }
+      };
       $scope.$watch('tags', _.debounce(getIdea, 150));
       $scope.newIdea = function() {
         $scope.addIdea = !$scope.addIdea;
@@ -157,7 +157,7 @@ angular.module('app', [
           id: tag,
           text: tag
         });
-        $rootScope.tags = _.uniq($rootScope.tags)
+        $rootScope.tags = _.uniq($rootScope.tags);
         $rootScope.link_params = _.map($rootScope.tags, function(tag) {
           return tag.text;
         });
@@ -178,7 +178,7 @@ angular.module('app', [
       $http,
       $stateParams
     ) {
-      console.log('singleIdeaController')
+      console.log('singleIdeaController');
       $scope.idea_id = $stateParams.id;
       $scope.addIdea = false;
       $http.get('/api/get_one_idea/' + $scope.idea_id)
@@ -190,7 +190,7 @@ angular.module('app', [
             return {
               id: tag,
               text: tag
-            }
+            };
           });
         })
         .error(function(err) {
@@ -215,11 +215,14 @@ angular.module('app', [
         'tags': [],
         'width': '100%'
       };
+      $scope.loading = false;
+      $scope.click = function(){
+        $scope.loading = true;
+      };
       $http
         .get('/api/get_tag')
         .success(function(data) {
           $scope.select2Options.tags = angular.extend($scope.select2Options.tags, data);
-          console.log($scope.select2Options)
         });
       var linkInfo = function() {
         if ($scope.form.link !== '') {
@@ -238,14 +241,14 @@ angular.module('app', [
                 return {
                   id: tag,
                   text: tag
-                }
+                };
               }));
               $scope.form.tags = angular.extend($scope.form.tags, keywords);
               $scope.form.tags = angular.extend($scope.form.tags, _.map(keywords, function(tag) {
                 return {
                   id: tag,
                   text: tag
-                }
+                };
               }));
               $scope.form.linkTitle = data.title;
             })
