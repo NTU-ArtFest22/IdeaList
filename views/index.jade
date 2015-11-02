@@ -85,7 +85,7 @@ html(lang="en" ng-app='app')
                   p(ng-bind='form.linkTitle' style='min-height: 20px;')
                 .form-group
                   label(for="link") Link
-                  input.form-control(ng-model='form.link' type="text" id="link" placeholder="Link")
+                  input.form-control(ng-model='form.link' type="text" id="link" placeholder="Link" required)
                 .form-group
                   label(for="tag") Tag
                   input#tag.select2Input(type="hidden" ui-select2="select2Options" ng-model="form.tags")
@@ -94,6 +94,6 @@ html(lang="en" ng-app='app')
               textarea#content.col-xs-12.form-control(tbio ng-model='form.content' type="text")
             hr
             .row
-              input.col-xs-5.btn.btn-primary(type="submit")
+              input.col-xs-5.btn.btn-primary(type="submit" ng-click='click()' ng-disabled='loading || !newIdea.$valid')
               .col-xs-2
               button.col-xs-5.btn.btn-default(type="button" data-dismiss="modal") Cancel

@@ -6,7 +6,7 @@ var timeStamps = require('mongoose-timestamp');
 var TagSchema = new Schema({
   name: {
     type: String,
-    required: true
+    default: ''
   }
 });
 TagSchema.plugin(timeStamps, {

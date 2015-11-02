@@ -25,7 +25,6 @@ var linkInfo = function(req, res) {
     .spread(function(response, body) {
       if (response.statusCode === 200) {
         var data = extractor(body);
-        console.log(data)
         return res.json(data);
       }
       return res.json('ENOTFOUND');
@@ -92,7 +91,7 @@ var getTag = function(req, res) {
         return {
           id: element._id,
           text: element.name
-        }
+        };
       });
       return res.json(data);
     })
@@ -105,7 +104,9 @@ var createIdea = function(req, res) {
   var data = _.clone(req.body);
   data.user = req.user._id;
   if (_.isEmpty(data.tags)) {
-    data.tags = ['uncategorized'];
+    data.tags = [{
+      text: 'uncategorized'
+    }];
   }
   var promiseArray = [];
   var tags = [];

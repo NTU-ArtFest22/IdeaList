@@ -216,9 +216,6 @@ angular.module('app', [
         'width': '100%'
       };
       $scope.loading = false;
-      $scope.click = function(){
-        $scope.loading = true;
-      };
       $http
         .get('/api/get_tag')
         .success(function(data) {
@@ -235,7 +232,7 @@ angular.module('app', [
               $scope.waiting = false;
               $scope.form.image = data.image;
               if (data.keywords) {
-                var keywords = data.keywords.split(', ');
+                var keywords = data.keywords.split(',');
               }
               $scope.form.tags = angular.extend($scope.form.tags, _.map(data.tags, function(tag) {
                 return {
@@ -265,8 +262,14 @@ angular.module('app', [
       $scope.$watch('form.link', _.debounce(linkInfo, 150));
       $scope.submitForm = function() {
         var data = $scope.form;
-        $http
-          .post('/api/create_idea', data)
+        if (data.link && data.tags !== []) {
+          $scope.loading = true;
+          $http
+            .post('/api/create_idea', data)
+            .success(function() {
+              $scope.loading = false;
+            });
+        }
       };
     }
   ]);
