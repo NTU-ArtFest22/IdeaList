@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node develop.js",
+    "start": "node cluster.js",
     "postinstall": "./node_modules/bower/bin/bower install"
   },
   "dependencies": {
