@@ -71,6 +71,12 @@ angular.module('app', [
       };
       $scope.addIdea = false;
       $scope.newIdea = function() {
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'newIdea',
+          eventAction: 'newIdea',
+          eventLabel: 'Someone try to post a new idea'
+        });
         $scope.addIdea = !$scope.addIdea;
       };
     }
@@ -150,6 +156,12 @@ angular.module('app', [
       };
       $scope.$watch('tags', _.debounce(getIdea, 150));
       $scope.newIdea = function() {
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'newIdea',
+          eventAction: 'newIdea',
+          eventLabel: 'Someone try to post a new idea'
+        });
         $scope.addIdea = !$scope.addIdea;
       };
       $scope.pushTag = function(tag) {
@@ -197,6 +209,12 @@ angular.module('app', [
           console.log(err);
         });
       $scope.newIdea = function() {
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'newIdea',
+          eventAction: 'newIdea',
+          eventLabel: 'Someone try to post a new idea'
+        });
         $scope.addIdea = !$scope.addIdea;
       };
     }
@@ -261,6 +279,12 @@ angular.module('app', [
       };
       $scope.$watch('form.link', _.debounce(linkInfo, 150));
       $scope.submitForm = function() {
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'ideaSubmit',
+          eventAction: 'ideaSubmit',
+          eventLabel: 'Someone submited an idea'
+        });
         var data = $scope.form;
         if (data.link && data.tags !== []) {
           $scope.loading = true;

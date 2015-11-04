@@ -28,7 +28,7 @@ html(lang="en" ng-app='app')
           .col-xs-2.vcenter
             ul.nav.navbar-nav
               li.btn.btn-danger.nav-li
-                a.nav-block.white(href='/login/facebook' target="_self").
+                a.login.nav-block.white(href='/login/facebook' target="_self").
                   Login & Post new idea
         .col-xs-6.vcenter
           ul.nav.navbar-nav
@@ -50,7 +50,7 @@ html(lang="en" ng-app='app')
           .col-xs-2.vcenter
             ul.nav.navbar-nav
               li.btn.btn-default.nav-li
-                a.nav-block(href='/login/facebook' target="_self").
+                a.login.nav-block(href='/login/facebook' target="_self").
                   Facebook Login
     #wrapper.container-fluid
       div(ui-view)
@@ -63,10 +63,17 @@ html(lang="en" ng-app='app')
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       ga('create', 'UA-68973533-2', 'auto');
       ga('send', 'pageview');
-
     script(type='text/javascript' src='/js/app.js')
     script.
       $(document).ready(function(){
+        $('.login').click(function(){
+          ga('send', {
+            hitType: 'event',
+            eventCategory: 'Facebook Login',
+            eventAction: 'facebook-login',
+            eventLabel: 'Someone login with facebook'
+          });
+        })
         $(document.body).css('padding-top', $('#navbar-collapsible').height() + 40);
         $(window).resize(function(){
             $(document.body).css('padding-top', $('#navbar-collapsible').height() + 40);
