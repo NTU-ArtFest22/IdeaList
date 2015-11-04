@@ -17,7 +17,7 @@ html(lang="en" ng-app='admin_app')
     link(rel="stylesheet" href="/textboxio/resources/css/textboxio.css")
     link(rel='stylesheet', href='/css/admin_basic.css')
   body
-    #navbar-collapsible.navbar.navbar-default.navbar-fixed-top.navbar-collapse.collapse
+    #navbar-collapsible.navbar.navbar-default.navbar-collapse.collapse
       .container-fluid
         .col-xs-2.vcenter
           ul.nav.navbar-nav
@@ -35,7 +35,7 @@ html(lang="en" ng-app='admin_app')
                 .tag
                   p
                     = tag
-            a(href= idea.link )
+            a(href= '/idea/'+idea._id )
               = idea.linkTitle
             p.idea-content(ng-bind-html="idea.content | to_trusted ")
             p.timestamp
