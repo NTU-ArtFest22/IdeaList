@@ -196,22 +196,6 @@ var updateIdea = function(req, res) {
       return res.status(500).json(err);
     });
 };
-var deleteIdea = function(req, res) {
-  var ideaId = req.params.id;
-  var user = req.user._id;
-  return Idea
-    .findOneAndRemoveAsync({
-      _id: ideaId,
-      user: user
-    })
-    .then(function(data) {
-      return res.json(data);
-    })
-    .error(function(err) {
-      console.log(err.stack);
-      return res.status(500).json(err);
-    });
-};
 app.get('/get_tag', getTag);
 app.get('/get_one_idea/:id', getOneIdea);
 app.post('/get_comment/:id', getComment);
@@ -220,7 +204,7 @@ app.post('/get_idea', getIdea);
 app.use(middleWare.apiLoginCheck);
 app.put('/update_idea/:id', updateIdea);
 app.post('/create_idea', createIdea);
-app.delete('/delete_idea/:id', deleteIdea);
+
 app.use(function(req, res) {
   return res.status(400).json({
     error: 'API does not exist.'
