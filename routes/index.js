@@ -10,7 +10,7 @@ function passLocals(req, pageTitle, object) {
   var error = req.flash('error');
   var message = req.flash('message');
   return _.extend({
-    defaultImage: 'placeholder.png',
+    defaultImage: 'logo.png',
     error: error,
     message: message,
     pageTitle: pageTitle

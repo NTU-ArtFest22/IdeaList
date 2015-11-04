@@ -1,7 +1,7 @@
 <div masonry preserve-order reload-on-show column-width="300">
   <div class="pin masonry-brick" ng-click='initModal(idea);' ng-repeat="idea in $root.ideaList | orderBy:'-created_at'" ng-class="{backItem:hover === 'init', backItem: hover === idea._id }" ng-mouseenter="setHover(idea._id)" ng-mouseleave="setHover('init')">
     <a ui-sref="idea({id: idea._id})">
-      <img class='img-responsive' ng-src="{{idea.image}}" ng-init="idea.image = (idea.image)? idea.image: &quot;placeholder.png&quot;" onerror="imgError(this);"/>
+      <img class='img-responsive' ng-src="{{idea.image}}" ng-init="idea.image = (idea.image)? idea.image: &quot;logo.png&quot;" onerror="imgError(this);"/>
       <h3 ng-bind="idea.linkTitle"></h3>
       <p ng-if='idea.content' ng-bind-html="idea.content | words: 15 | to_trusted "></p>
     </a>
@@ -17,7 +17,7 @@
 'use strict'
 var imgError = function(image) {
   image.onerror = '';
-  image.src = '/placeholder.png';
+  image.src = '/logo.png';
   return true;
 };
 </script>
